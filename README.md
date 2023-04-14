@@ -8,3 +8,8 @@ From this:
 To this!:
 ![image](https://user-images.githubusercontent.com/49227260/231942279-b7267a38-b560-4780-8c7a-9c3c1e7bdf24.png)
 
+The output will be loaded in this order:
+![image](https://user-images.githubusercontent.com/49227260/231942712-addc3bfa-8cfe-431c-b709-2a2c3b5f63b6.png)
+
+
+We are using 14 x 8 tiles. The shape of each tile is hard coded.
