@@ -11,5 +11,16 @@ To this!:
 The output will be loaded in this order:
 ![image](https://user-images.githubusercontent.com/49227260/231942712-addc3bfa-8cfe-431c-b709-2a2c3b5f63b6.png)
 
+## Usage
+
+Set your canvas size to that of the tiles before running the script.
+
+## Custimisation
+
+You can modify some variables in the script to fit your specific use case:
+
+srcTileWidth: The width of your source isometric tile.
+srcTileHeight: The height of your source isometric tile.
+gap: The number of pixels you want to have as a gap between the extracted tiles in the new sprite.
 
 We are using 14 x 8 tiles. The shape of each tile is hard coded.
