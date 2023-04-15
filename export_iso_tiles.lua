@@ -4,6 +4,13 @@ if spr == nil then
   return
 end
 
+local layer = app.activeLayer
+if layer == nil then
+  app.alert("There is no active layer")
+  return
+end
+
+local srcImg = app.activeCel.image
 
 local dlg = Dialog("Isometric Tiles")
 dlg:number{ id="numRows", label="Rows:", text="4", decimals=0 }
@@ -21,16 +28,18 @@ local numRows = data.numRows
 local numCols = data.numCols
 local totalTiles = numRows * numCols
 
--- Set the dimensions of the tiles and the gap between them
+-- Set the dimensions of the tiles
 local srcTileWidth = 14
 local srcTileHeight = 8
-local gap = 2
 
 -- Calculate the dimensions of the new sprite
-local newSpriteWidth = totalTiles * (srcTileWidth + gap) - gap
-local newSpriteHeight = srcTileHeight
+local newSpriteSize = 32
+local newSpriteHeight = numRows * newSpriteSize
+local newSpriteWidth = numCols * newSpriteSize
 
-local srcImg = app.activeCel.image
+-- Sprite will be placed in the middle of a box. This the upper leftmost cell.
+local newSpriteXOffset = 9
+local newSpriteYOffset = 12
 
 -- Create a new sprite with the calculated dimensions
 local newSpr = Sprite(newSpriteWidth, newSpriteHeight, ColorMode.RGB)
@@ -79,11 +88,11 @@ for row = 0, numRows - 1 do
     local startX = col * srcTileHeight + row * srcTileHeight
     local startY = col * (-halfTileHeight) + row * halfTileHeight + (numRows - 1) * halfTileHeight
 
-    local tileImg = copy_isometric_area(spr.cels[1].image, startX, startY)
+    local tileImg = copy_isometric_area(srcImg, startX, startY)
     -- print("Row: " .. (row + 1) .. ", Col: " .. (col + 1) .. " => (" .. startX .. ", " .. startY .. ")")
     -- Calculate the position in the new sprite for the current tile
-    local newTileX = tileCounter * (srcTileWidth + gap)
-    local newTileY = 0
+    local newTileX = col * newSpriteSize + newSpriteXOffset
+    local newTileY = row * newSpriteSize + newSpriteYOffset
 
     newImage:drawImage(tileImg, newTileX, newTileY)
     tileCounter = tileCounter + 1
@@ -94,3 +103,12 @@ end
 local newCel = newSpr:newCel(newSpr.layers[1], 1)
 newCel.image = newImage
 app.activeSprite = newSpr
+
+
+-- Update the name
+function trimFileExtension(filename)
+    local trimmedName = filename:match("(.+)%..+$")
+    return trimmedName or filename
+end
+
+newSpr.filename = trimFileExtension(spr.filename) .. "-" .. layer.name .. "-isotilemap"
